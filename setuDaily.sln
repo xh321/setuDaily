@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2035
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "setuDaily", "setuDaily.csproj", "{9668AB0B-C381-4FA9-8F3D-3A93452B0521}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9668AB0B-C381-4FA9-8F3D-3A93452B0521}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9668AB0B-C381-4FA9-8F3D-3A93452B0521}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9668AB0B-C381-4FA9-8F3D-3A93452B0521}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9668AB0B-C381-4FA9-8F3D-3A93452B0521}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5EFFDC94-3326-4FAA-91C6-938D820FBE5D}
+	EndGlobalSection
+EndGlobal
