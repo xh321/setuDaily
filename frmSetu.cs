@@ -20,12 +20,15 @@ using System.Runtime.InteropServices;
 using System.Threading;
 //调用WINDOWS API函数时要用到
 using Microsoft.Win32; //写入注册表时要用到
-
+using PyLibSharp.Requests;
 
 namespace setuDaily
 {
     public partial class frmSetu : Form
     {
+        static string setuDomain = "https://api.lolicon.app";
+
+
         const int SPI_SETDESKWALLPAPER  = 20;
         const int SPIF_UPDATEINIFILE    = 0x01;
         const int SPIF_SENDWININICHANGE = 0x02;
@@ -187,20 +190,25 @@ namespace setuDaily
         private void frmSetu_Load(object sender, EventArgs e)
         {
             Control.CheckForIllegalCrossThreadCalls = false;
-            //reSetSize((frmSetu) sender);
-            container.Width = this.Width;
+            if (!string.IsNullOrEmpty(Properties.Settings.Default.proxy))
+            {
+                txtProxy.Text = Properties.Settings.Default.proxy;
+            }
+                //reSetSize((frmSetu) sender);
+                container.Width = this.Width;
             container.Height =
                 ((frmSetu) sender).Height - btnGKD.Height - progress.Height - groupBox1.Height - 50;
             picSetu.Width             =  this.Width       - 30;
             picSetu.Height            =  container.Height - 50;
             comStyle.SelectedIndex    =  0;
-            comSetuType.SelectedIndex =  1;
+            comSetuType.SelectedIndex =  0;
             picSetu.MouseWheel        += new System.Windows.Forms.MouseEventHandler(this.picSetu_MouseWheel);
-//            SyncCallBack(loadData());
+            //            SyncCallBack(loadData());
             //异步调取涩图
-            fh = new FuncHandle(this.loadData);
-            AsyncCallback callback = new AsyncCallback(this.AsyncCallbackImpl);
-            fh.BeginInvoke(callback, null);
+            comboSource.SelectedIndex =1;
+            //fh = new FuncHandle(this.loadData);
+            //AsyncCallback callback = new AsyncCallback(this.AsyncCallbackImpl);
+            //fh.BeginInvoke(callback, null);
 
             frmSetu_Resize(this, null);
         }
@@ -279,7 +287,13 @@ namespace setuDaily
         public void AsyncCallbackImpl(IAsyncResult ar)
         {
             setuInfo re = fh.EndInvoke(ar);
-            if (re != null)
+
+            if(!string.IsNullOrEmpty(re.msg) && re.msg != "success")
+            {
+                MessageBox.Show(re.msg);
+            }
+
+            if (re != null && re.data!=null && re.data.Any() && !string.IsNullOrEmpty(re.data.First().title))
             {
                 this.Text = re.data[0].title + " by " + re.data[0].author + "(" + re.data[0].uid + ") | tags: ";
                 foreach (string s in re.data[0].tags)
@@ -291,13 +305,35 @@ namespace setuDaily
                 currSetuInfo = re;
                 lblStatus.Text = "色图原始分辨率：" + re.data[0].width + "X" + re.data[0].height + "；是否R-18：" +
                                  (re.data[0].r18 == "true" ? "是" : "否");
-                btnGKD.Enabled = true;
-                btnGKD.Text    = "太慢🌶，给👴停下，下一张";
-                picSetu.LoadAsync(re.data[0].url);
+                
+                //btnGKD.Text    = "太慢🌶，给👴停下，下一张";
+
+                var getParam = new ReqParams()
+                {
+                    Timeout = 10000
+                };
+                if (!string.IsNullOrEmpty(txtProxy.Text))
+                {
+                    getParam.ProxyToUse = new WebProxy(txtProxy.Text);
+                }
+                
+                var task = Requests.GetAsync(re.data[0].url, getParam)
+                    .ContinueWith((resp) =>
+                    {
+                        btnGKD.Enabled = true;
+                        if (resp.IsCompleted)
+                        {
+                            Image res = Image.FromStream(resp.Result.RawStream);
+                            picSetu.Image = res;
+                        }
+                    });
+
+                //picSetu.LoadAsync();
                 comStyle.Enabled = true;
             }
             else
             {
+                MessageBox.Show("色图加载失败咯，请重试");
                 comStyle.Enabled = true;
                 btnGKD.Enabled   = true;
             }
@@ -323,11 +359,20 @@ namespace setuDaily
                     r18type = "1";
                     break;
             }
+            var getParam = new ReqParams()
+            {
+                Timeout = 10000
+            };
+            if (!string.IsNullOrEmpty(txtProxy.Text))
+            {
+                getParam.ProxyToUse = new WebProxy(txtProxy.Text);
+            }
+            string ret = Requests.Get(setuDomain+"/setu?r18=" + r18type, getParam).ToString();
 
-            string ret = HttpGet("http://api.lolicon.app/setu?r18=" + r18type);
             if (ret != "")
             {
                 setuInfo rt = JsonConvert.DeserializeObject<setuInfo>(ret);
+
                 return rt;
             }
             else
@@ -342,80 +387,15 @@ namespace setuDaily
 
         private void btnGKD_Click(object sender, EventArgs e)
         {
-            if (btnGKD.Text == "太慢🌶，给👴停下，下一张")
-            {
-                btnGKD.Text = "再来1️🐙给👴👀👀";
-                picSetu.CancelAsync();
-            }
+            //if (btnGKD.Text == "太慢🌶，给👴停下，下一张")
+            //{
+            //    btnGKD.Text = "再来1️🐙给👴👀👀";
+            //}
 
             btnGKD.Enabled = false;
             fh             = new FuncHandle(this.loadData);
             AsyncCallback callback = new AsyncCallback(this.AsyncCallbackImpl);
             fh.BeginInvoke(callback, null);
-        }
-
-        public static bool CheckValidationResult(object                   sender,
-            System.Security.Cryptography.X509Certificates.X509Certificate certificate, X509Chain chain,
-            SslPolicyErrors                                               errors)
-        {
-            return true;
-        }
-
-        public string HttpGet(string url, string post_parament = "")
-        {
-            string         html;
-            HttpWebRequest Web_Request = (HttpWebRequest) WebRequest.Create(url);
-            System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-            Web_Request.Timeout                             = 30000;
-            Web_Request.Method                              = "GET";
-            Web_Request.UserAgent                           = "Mozilla/4.0";
-            Web_Request.Headers.Add("Accept-Encoding", "gzip, deflate");
-            Web_Request.ServerCertificateValidationCallback =
-                new RemoteCertificateValidationCallback(CheckValidationResult);
-            //Web_Request.Credentials = CredentialCache.DefaultCredentials;
-
-            //设置代理属性WebProxy-------------------------------------------------
-            //WebProxy proxy = new WebProxy("111.13.7.120", 80);
-            //在发起HTTP请求前将proxy赋值给HttpWebRequest的Proxy属性
-            //Web_Request.Proxy = proxy;
-            this.Text = "每日涩图 - 获取返回中...";
-            HttpWebResponse Web_Response = null;
-            try
-            {
-                Web_Response = (HttpWebResponse) Web_Request.GetResponse();
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message, "报错了", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return "";
-            }
-
-            if (Web_Response.ContentEncoding.ToLower() == "gzip") // 如果使用了GZip则先解压
-            {
-                using (Stream Stream_Receive = Web_Response.GetResponseStream())
-                {
-                    using (var Zip_Stream = new GZipStream(Stream_Receive, CompressionMode.Decompress))
-                    {
-                        using (StreamReader Stream_Reader = new StreamReader(Zip_Stream, Encoding.UTF8))
-                        {
-                            html      = Stream_Reader.ReadToEnd();
-                            this.Text = "每日涩图 - 加载信息中...";
-                        }
-                    }
-                }
-            }
-            else
-            {
-                using (Stream Stream_Receive = Web_Response.GetResponseStream())
-                {
-                    using (StreamReader Stream_Reader = new StreamReader(Stream_Receive, Encoding.UTF8))
-                    {
-                        html = Stream_Reader.ReadToEnd();
-                    }
-                }
-            }
-
-            return html;
         }
 
         private void picSetu_LoadCompleted(object sender, AsyncCompletedEventArgs e)
@@ -935,6 +915,17 @@ namespace setuDaily
             System.Diagnostics.Process.Start(
                 "http://touch.pixiv.net/member_illust.php?id=" + currSetuInfo.data[0].uid);
         }
+
+        private void comboSource_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            setuDomain = comboSource.SelectedItem.ToString();
+        }
+
+        private void txtProxy_TextChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.proxy = txtProxy.Text;
+            Properties.Settings.Default.Save();
+        }
     }
 
     public class setuItem
@@ -942,52 +933,52 @@ namespace setuDaily
         /// <summary>
         /// 
         /// </summary>
-        public int pid { get; set; }
+        public int? pid { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
-        public int p { get; set; }
+        public int? p { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
-        public int uid { get; set; }
+        public int? uid { get; set; }
 
         /// <summary>
         /// 伊19
         /// </summary>
-        public string title { get; set; }
+        public string? title { get; set; } = "";
 
         /// <summary>
         /// 
         /// </summary>
-        public string author { get; set; }
+        public string? author { get; set; } = "";
 
         /// <summary>
         /// 
         /// </summary>
-        public string url { get; set; }
+        public string? url { get; set; } = "";
 
         /// <summary>
         /// 
         /// </summary>
-        public string r18 { get; set; }
+        public string? r18 { get; set; } = "";
 
         /// <summary>
         /// 
         /// </summary>
-        public int width { get; set; }
+        public int? width { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
-        public int height { get; set; }
+        public int? height { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
-        public List<string> tags { get; set; }
+        public List<string?> tags { get; set; } = new List<string?>();
     }
 
     public class setuInfo
@@ -995,17 +986,17 @@ namespace setuDaily
         /// <summary>
         /// 
         /// </summary>
-        public int code { get; set; }
+        public int? code { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
-        public string msg { get; set; }
+        public string? msg { get; set; } = "";
 
         /// <summary>
         /// 
         /// </summary>
-        public int count { get; set; }
+        public int? count { get; set; }
 
         /// <summary>
         /// 

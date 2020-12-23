@@ -35,11 +35,19 @@
             this.cms = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.复制涩图ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.quickSave = new System.Windows.Forms.ToolStripMenuItem();
             this.保存涩图ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.设为壁纸ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.resetZoom = new System.Windows.Forms.ToolStripMenuItem();
             this.重新加载当前涩图ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.progress = new System.Windows.Forms.ProgressBar();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.txtProxy = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.comboSource = new System.Windows.Forms.ComboBox();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
             this.comSetuType = new System.Windows.Forms.ComboBox();
             this.lblStatus = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
@@ -48,10 +56,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.comStyle = new System.Windows.Forms.ComboBox();
             this.sfd = new System.Windows.Forms.SaveFileDialog();
-            this.button2 = new System.Windows.Forms.Button();
-            this.quickSave = new System.Windows.Forms.ToolStripMenuItem();
-            this.resetZoom = new System.Windows.Forms.ToolStripMenuItem();
-            this.button3 = new System.Windows.Forms.Button();
             this.container.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picSetu)).BeginInit();
             this.cms.SuspendLayout();
@@ -61,7 +65,6 @@
             // btnGKD
             // 
             this.btnGKD.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.btnGKD.Enabled = false;
             this.btnGKD.Font = new System.Drawing.Font("微软雅黑", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnGKD.Location = new System.Drawing.Point(0, 650);
             this.btnGKD.Name = "btnGKD";
@@ -112,14 +115,14 @@
             this.resetZoom,
             this.重新加载当前涩图ToolStripMenuItem});
             this.cms.Name = "cms";
-            this.cms.Size = new System.Drawing.Size(257, 172);
+            this.cms.Size = new System.Drawing.Size(252, 186);
             // 
             // 复制涩图ToolStripMenuItem
             // 
             this.复制涩图ToolStripMenuItem.Enabled = false;
             this.复制涩图ToolStripMenuItem.Name = "复制涩图ToolStripMenuItem";
             this.复制涩图ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.复制涩图ToolStripMenuItem.Size = new System.Drawing.Size(256, 24);
+            this.复制涩图ToolStripMenuItem.Size = new System.Drawing.Size(251, 26);
             this.复制涩图ToolStripMenuItem.Text = "复制涩图";
             this.复制涩图ToolStripMenuItem.Click += new System.EventHandler(this.复制涩图ToolStripMenuItem_Click);
             // 
@@ -129,9 +132,18 @@
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Alt) 
             | System.Windows.Forms.Keys.C)));
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(256, 24);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(251, 26);
             this.toolStripMenuItem1.Text = "复制涩图链接";
             this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
+            // 
+            // quickSave
+            // 
+            this.quickSave.Enabled = false;
+            this.quickSave.Name = "quickSave";
+            this.quickSave.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+            this.quickSave.Size = new System.Drawing.Size(251, 26);
+            this.quickSave.Text = "快速保存";
+            this.quickSave.Click += new System.EventHandler(this.quickSave_Click);
             // 
             // 保存涩图ToolStripMenuItem
             // 
@@ -139,7 +151,7 @@
             this.保存涩图ToolStripMenuItem.Name = "保存涩图ToolStripMenuItem";
             this.保存涩图ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Alt) 
             | System.Windows.Forms.Keys.S)));
-            this.保存涩图ToolStripMenuItem.Size = new System.Drawing.Size(256, 24);
+            this.保存涩图ToolStripMenuItem.Size = new System.Drawing.Size(251, 26);
             this.保存涩图ToolStripMenuItem.Text = "保存涩图";
             this.保存涩图ToolStripMenuItem.Click += new System.EventHandler(this.保存涩图ToolStripMenuItem_Click);
             // 
@@ -147,16 +159,24 @@
             // 
             this.设为壁纸ToolStripMenuItem.Enabled = false;
             this.设为壁纸ToolStripMenuItem.Name = "设为壁纸ToolStripMenuItem";
-            this.设为壁纸ToolStripMenuItem.Size = new System.Drawing.Size(256, 24);
+            this.设为壁纸ToolStripMenuItem.Size = new System.Drawing.Size(251, 26);
             this.设为壁纸ToolStripMenuItem.Text = "设为壁纸";
             this.设为壁纸ToolStripMenuItem.Click += new System.EventHandler(this.设为壁纸ToolStripMenuItem_Click);
+            // 
+            // resetZoom
+            // 
+            this.resetZoom.Enabled = false;
+            this.resetZoom.Name = "resetZoom";
+            this.resetZoom.Size = new System.Drawing.Size(251, 26);
+            this.resetZoom.Text = "重置缩放比例";
+            this.resetZoom.Click += new System.EventHandler(this.resetZoom_Click);
             // 
             // 重新加载当前涩图ToolStripMenuItem
             // 
             this.重新加载当前涩图ToolStripMenuItem.Enabled = false;
             this.重新加载当前涩图ToolStripMenuItem.Name = "重新加载当前涩图ToolStripMenuItem";
             this.重新加载当前涩图ToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
-            this.重新加载当前涩图ToolStripMenuItem.Size = new System.Drawing.Size(256, 24);
+            this.重新加载当前涩图ToolStripMenuItem.Size = new System.Drawing.Size(251, 26);
             this.重新加载当前涩图ToolStripMenuItem.Text = "重新加载当前涩图";
             this.重新加载当前涩图ToolStripMenuItem.Click += new System.EventHandler(this.重新加载当前涩图ToolStripMenuItem_Click);
             // 
@@ -170,6 +190,10 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label3);
+            this.groupBox1.Controls.Add(this.txtProxy);
+            this.groupBox1.Controls.Add(this.label2);
+            this.groupBox1.Controls.Add(this.comboSource);
             this.groupBox1.Controls.Add(this.button3);
             this.groupBox1.Controls.Add(this.button2);
             this.groupBox1.Controls.Add(this.comSetuType);
@@ -180,13 +204,77 @@
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.comStyle);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.groupBox1.Location = new System.Drawing.Point(0, 525);
+            this.groupBox1.Location = new System.Drawing.Point(0, 487);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(1112, 100);
+            this.groupBox1.Size = new System.Drawing.Size(1112, 138);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "设置";
             this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(320, 102);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(216, 15);
+            this.label3.TabIndex = 12;
+            this.label3.Text = "给👴挂代理（写地址在后面）：";
+            // 
+            // txtProxy
+            // 
+            this.txtProxy.Location = new System.Drawing.Point(553, 99);
+            this.txtProxy.Name = "txtProxy";
+            this.txtProxy.Size = new System.Drawing.Size(547, 25);
+            this.txtProxy.TabIndex = 11;
+            this.txtProxy.TextChanged += new System.EventHandler(this.txtProxy_TextChanged);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(12, 81);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(67, 15);
+            this.label2.TabIndex = 10;
+            this.label2.Text = "色图源：";
+            // 
+            // comboSource
+            // 
+            this.comboSource.FormattingEnabled = true;
+            this.comboSource.Items.AddRange(new object[] {
+            "https://api.lolicon.app",
+            "https://api.yukari.one"});
+            this.comboSource.Location = new System.Drawing.Point(12, 99);
+            this.comboSource.Name = "comboSource";
+            this.comboSource.Size = new System.Drawing.Size(174, 23);
+            this.comboSource.TabIndex = 9;
+            this.comboSource.SelectedIndexChanged += new System.EventHandler(this.comboSource_SelectedIndexChanged);
+            // 
+            // button3
+            // 
+            this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button3.Enabled = false;
+            this.button3.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button3.Location = new System.Drawing.Point(553, 59);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(199, 37);
+            this.button3.TabIndex = 8;
+            this.button3.Text = "打开作者Pixiv主页";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // button2
+            // 
+            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button2.Enabled = false;
+            this.button2.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button2.Location = new System.Drawing.Point(758, 59);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(159, 37);
+            this.button2.TabIndex = 7;
+            this.button2.Text = "复制涩图";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // comSetuType
             // 
@@ -194,7 +282,6 @@
             this.comSetuType.FormattingEnabled = true;
             this.comSetuType.Items.AddRange(new object[] {
             "健康涩图",
-            "R18-健康混合",
             "纯R18涩图"});
             this.comSetuType.Location = new System.Drawing.Point(12, 53);
             this.comSetuType.Name = "comSetuType";
@@ -277,49 +364,6 @@
             this.sfd.DefaultExt = "jpg";
             this.sfd.Filter = "jpg 图片文件|*jpg";
             // 
-            // button2
-            // 
-            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.Enabled = false;
-            this.button2.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button2.Location = new System.Drawing.Point(758, 59);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(159, 37);
-            this.button2.TabIndex = 7;
-            this.button2.Text = "复制涩图";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // quickSave
-            // 
-            this.quickSave.Enabled = false;
-            this.quickSave.Name = "quickSave";
-            this.quickSave.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.quickSave.Size = new System.Drawing.Size(256, 24);
-            this.quickSave.Text = "快速保存";
-            this.quickSave.Click += new System.EventHandler(this.quickSave_Click);
-            // 
-            // resetZoom
-            // 
-            this.resetZoom.Enabled = false;
-            this.resetZoom.Name = "resetZoom";
-            this.resetZoom.Size = new System.Drawing.Size(256, 24);
-            this.resetZoom.Text = "重置缩放比例";
-            this.resetZoom.Click += new System.EventHandler(this.resetZoom_Click);
-            // 
-            // button3
-            // 
-            this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button3.Enabled = false;
-            this.button3.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button3.Location = new System.Drawing.Point(553, 59);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(199, 37);
-            this.button3.TabIndex = 8;
-            this.button3.Text = "打开作者Pixiv主页";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
-            // 
             // frmSetu
             // 
             this.AcceptButton = this.btnGKD;
@@ -369,6 +413,10 @@
         private System.Windows.Forms.ToolStripMenuItem quickSave;
         private System.Windows.Forms.ToolStripMenuItem resetZoom;
         private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ComboBox comboSource;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox txtProxy;
     }
 }
 
